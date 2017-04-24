@@ -1,18 +1,9 @@
 <?php
 
-file_put_contents('php_debug.log', 'login0 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-var_dump("_POST=", $_POST, "END");
-var_dump("_GET=", $_GET, "END");
-$toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
 //load and connect to MySQL database stuff
 require("config.inc.php");
 
 if (!empty($_POST)) {
-
-	file_put_contents('php_debug.log', 'login1 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-	//var_dump("_POST=", $_POST, "END");
-	$toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
 
     //gets user's info based off of a username.
     $query = " 
@@ -72,9 +63,6 @@ if (!empty($_POST)) {
         die(json_encode($response));
     }
 } else {
-	file_put_contents('php_debug.log', 'login2 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-	//var_dump("_POST=", $_POST, "END");
-	$toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
 ?>
 		<h1>Login</h1> 
 		<form action="login.php" method="post"> 
@@ -89,6 +77,3 @@ if (!empty($_POST)) {
 		<a href="register.php">Register</a>
 	<?php
 }
-
-?> 
-

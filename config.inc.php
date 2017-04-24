@@ -26,16 +26,11 @@
         // different types of database servers.  For more information on PDO: 
         // http://us2.php.net/manual/en/class.pdo.php 
 	
-	file_put_contents('php_debug.log', 'config attempt connect to db >'. $host . ' ' . $dbname. ' ' . $username. ' ' . $password.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-	$toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
-        $db = new PDO("mysql:host={$host};dbname={$dbname};charset=utf8", $username, $password, $options); 
+        $db = new PDO("mysql:host={$host};dbname={$dbname};charset=utf8", $username, $password, $options);
     } 
     catch(PDOException $ex) 
     { 
-	file_put_contents('php_debug.log', 'config failed connect to db >'. $host . ' ' . $dbname . ' ' . $username. ' ' . $password.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-	$toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-        // If an error occurs while opening a connection to your database, it will 
+        // If an error occurs while opening a connection to your database, it will
         // be trapped here.  The script will output an error and stop executing. 
         // Note: On a production website, you should not output $ex->getMessage(). 
         // It may provide an attacker with helpful information about your code 

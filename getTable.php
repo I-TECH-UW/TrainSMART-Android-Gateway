@@ -1,22 +1,8 @@
 <?php
-
-file_put_contents('php_debug.log', 'getTable start >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-//var_dump("_POST=", $_POST, "END");
-var_dump("_Request=", $_SERVER['REQUEST_URI'], "END");
-$toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
 //load and connect to MySQL database stuff
 require("config.inc.php");
 
-file_put_contents('php_debug.log', 'test0 getTable found config >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-$toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
-
 if (!empty($_POST)) {
-
-	file_put_contents('php_debug.log', 'getTable0 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-	//var_dump("_POST=", $_POST, "END");
-	$toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
 
     //gets user's info based off of a username.
     $query = " 
@@ -34,22 +20,13 @@ if (!empty($_POST)) {
     );
     
     try {
-        file_put_contents('php_debug.log', 'getTable try select user >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-	var_dump("username=", $_POST['username'], "END");
-	var_dump("password=", $_POST['password'], "END");
-	var_dump("datatable=", $_POST['datatable'], "END");
-	$toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
         $stmt   = $db->prepare($query);
         $result = $stmt->execute($query_params);
     }
     catch (PDOException $ex) {
 
-        file_put_contents('php_debug.log', 'getTable cannot access database >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-	//var_dump("_POST=", $_POST, "END");
-	$toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-		
-	// For testing, you could use a die and message. 
+
+    	// For testing, you could use a die and message.
         //die("Failed to run query: " . $ex->getMessage());
         
         //or just use this use this one to product JSON data:
@@ -126,9 +103,6 @@ if (!empty($_POST)) {
         die(json_encode($response));
     }
 } else {
-	file_put_contents('php_debug.log', 'login2 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-	//var_dump("_POST=", $_POST, "END");
-	$toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
 ?>
 		<h1>Login</h1> 
 		<form action="person.php" method="post"> 
@@ -148,9 +122,6 @@ function getPersonToAssessments($person_id, $facility_id, $date_created, $assess
 
    global $db;
 
-   file_put_contents('php_debug.log', 'getPersonToAssessments1 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
       $query = "
 select
 person_id,
@@ -164,10 +135,6 @@ and date_created = :date_created
 and assessment_id = :assessment_id
 and user_id = :user_id
 	";
-
-   file_put_contents('php_debug.log', 'getPersonToAssessments2 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-   // var_dump("query=", $query, "END");
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
 
    try {
 
@@ -183,10 +150,6 @@ and user_id = :user_id
       $row = $stmt->fetch();
 
    } catch (PDOException $ex) {
-	    //die
-      file_put_contents('php_debug.log', 'getPersonToAssessments exception >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-      var_dump("exception=", $ex, "END");
-      $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
 
       return null;
    }
@@ -197,19 +160,11 @@ function insertPersonToAssessments($person_id, $facility_id, $date_created, $ass
 
    global $db;
 
-   file_put_contents('php_debug.log', 'insertPersonToAssessments0 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-   var_dump($person_id, $facility_id, $date_created, $assessment_id, $user_id);
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
    $insert = "
 insert into person_to_assessments
 (person_id, facility_id, date_created, assessment_id, user_id)
 values ( :person_id, :facility_id, :date_created, :assessment_id, :user_id )
 	";
-
-   file_put_contents('php_debug.log', 'insertPersonToAssessments1 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-    //var_dump("insert=", $insert, "END");
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
 
    try {
       $stmt = $db->prepare($insert);
@@ -220,16 +175,9 @@ values ( :person_id, :facility_id, :date_created, :assessment_id, :user_id )
       $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);      
       $result = $stmt->execute();
 
-   file_put_contents('php_debug.log', 'insertPersonToAssessments2 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-    var_dump("insert result=", $result, "END");
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
     }
     catch (PDOException $ex) {
 	    //die
-    file_put_contents('php_debug.log', 'insertPersonToAssessments exception >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-    var_dump("exception=", $ex, "END");
-    $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
 	    // continue?
     }
 }
@@ -239,15 +187,7 @@ function putPersonToAssessments(){
    global $db;
 
    $post = array();
-   //$post = $_POST['recs'];
 
-   file_put_contents('php_debug.log', 'putPersonToAssessments0 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-   var_dump("post['datatable']: ", $_POST['datatable'], "END");
-   //var_dump('$_POST: ', $_POST, "END");
-   //var_dump('$_POST num ', $_POST['num_recs'], "END");
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
-   
    for($i = 0; $i < $_POST['num_recs']; $i++){
 
       $recsKey = 'recs'.$i;
@@ -258,23 +198,12 @@ function putPersonToAssessments(){
       $assessment_id = $rec[3];
       $user_id =       $rec[4];
 
-      file_put_contents('php_debug.log', 'putPersonToAssessments() recs >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-      var_dump($person_id, $facility_id, $date_created, $assessment_id, $user_id);
-      $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
       $row = getPersonToAssessments($person_id, $facility_id, $date_created, $assessment_id, $user_id);
-
-      file_put_contents('php_debug.log', 'putPersonToAssessments() returned >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-      var_dump('row: ', $row);
-      $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
 
       if(!$row) {
          insertPersonToAssessments($person_id, $facility_id, $date_created, $assessment_id, $user_id);
       }
    }
-
-   file_put_contents('php_debug.log', 'putPersonToAssessments() DONE >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
 
    $response["success"] = 1;
    die(json_encode($response));
@@ -285,15 +214,7 @@ function putGeoLocations(){
     global $db;
 
     $post = array();
-    //$post = $_POST['recs'];
 
-    file_put_contents('php_debug.log', 'putGeoLocations0 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-    var_dump("post['datatable']: ", $_POST['datatable'], "END");
-    //var_dump('$_POST: ', $_POST, "END");
-    //var_dump('$_POST num ', $_POST['num_recs'], "END");
-    $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
-     
     for($i = 0; $i < $_POST['num_recs']; $i++){
 
         $recsKey = 'recs'.$i;
@@ -305,10 +226,6 @@ function putGeoLocations(){
         $username =      $rec[4];
         $password =      $rec[5];
 
-        file_put_contents('php_debug.log', 'putGeoLocations() recs >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-        var_dump($longitude, $latitude, $device_id, $created_at, $username, $password);
-        $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
         $row = getGeoLocations($longitude, $latitude, $device_id, $created_at, $username, $password);
 
         if(!$row) {
@@ -316,18 +233,12 @@ function putGeoLocations(){
         }
     }
 
-    file_put_contents('php_debug.log', 'putGeoLocations() DONE >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-    $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
     $response["success"] = 1;
     die(json_encode($response));
 }
 
 function getGeoLocations($longitude, $latitude, $device_id, $created_at, $username, $password){
        global $db;
-
-   file_put_contents('php_debug.log', 'getGeoLocations1 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
 
       $query = "
 select
@@ -346,10 +257,6 @@ and username = :username
 and password = :password
 	";
 
-   file_put_contents('php_debug.log', 'getGeoLocations2 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-   // var_dump("query=", $query, "END");
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
    try {
 
 	   
@@ -361,25 +268,14 @@ and password = :password
       $stmt->bindParam(':username', $username, PDO::PARAM_STR, strlen($username));
       $stmt->bindParam(':password', $password, PDO::PARAM_STR, strlen($password));
          
-      //file_put_contents('php_debug.log', 'getGeoLocations3a >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-      //var_dump("queryString=", $stmt->queryString, "END");
-      //$toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-      
       $result = $stmt->execute();
       $row = $stmt->fetch();
 
    } catch (PDOException $ex) {
-	    //die
-      file_put_contents('php_debug.log', 'getGeoLocations exception >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-      var_dump("exception=", $ex, "END");
-      $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
+        //die
 
       return null;
    }
-   
-   file_put_contents('php_debug.log', 'getGeoLocations3b >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-   var_dump("row=", $row, "END");
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
    
    return $row;
 }
@@ -387,19 +283,11 @@ and password = :password
 function insertGeoLocations($longitude, $latitude, $device_id, $created_at, $username, $password) {
     global $db;
     
-    file_put_contents('php_debug.log', 'insertGeoLocations0 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-    var_dump($longitude, $latitude, $device_id, $created_at, $username, $password);
-    $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-    
     $insert = "
 insert into geolocations
 (longitude, latitude, device_id, created_at, username, password)
 values ( :longitude, :latitude, :device_id, :created_at, :username, :password )
 	";
-    
-    file_put_contents('php_debug.log', 'insertGeoLocations1 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-    //var_dump("insert=", $insert, "END");
-    $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
     
     try {
         $stmt = $db->prepare($insert);
@@ -411,16 +299,10 @@ values ( :longitude, :latitude, :device_id, :created_at, :username, :password )
         $stmt->bindParam(':password', $password, PDO::PARAM_STR, strlen($password));
         $result = $stmt->execute();
     
-        file_put_contents('php_debug.log', 'insertGeoLocations2 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-        var_dump("insert result=", $result, "END");
-        $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-    
+
     }
     catch (PDOException $ex) {
         //die
-        file_put_contents('php_debug.log', 'insertGeoLocations exception >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-        var_dump("exception=", $ex, "END");
-        $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
         // continue?
     }
     
@@ -430,9 +312,6 @@ function getAssessmentsAnswers($person, $facility, $date_created, $assessment_id
 
    global $db;
 
-   file_put_contents('php_debug.log', 'getAssessmentsAnswers1 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-   var_dump($person, $facility, $date_created, $assessment_id, $question);
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
 
       $query = "
 select
@@ -463,11 +342,6 @@ and question = :question
       $row = $stmt->fetch();
 
    } catch (PDOException $ex) {
-	    //die
-      file_put_contents('php_debug.log', 'getAssessmentsAnswers exception >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-      var_dump("exception=", $ex, "END");
-      $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
       return null;
    }
    return $row;
@@ -477,19 +351,11 @@ function insertAssessmentsAnswers($person, $facility, $date_created, $assessment
 
    global $db;
 
-   file_put_contents('php_debug.log', 'insertAssessmentsAnswers0 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-   var_dump($person, $facility, $date_created, $assessment_id, $question, $answer);
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
    $insert = "
 insert into assess
 (person, facility, date_created, assessment_id, question, `option`, active)
 values ( :person, :facility, :date_created, :assessment_id, :question, :answer, 'Y' )
 	";
-
-   file_put_contents('php_debug.log', 'insertAssessmentsAnswers1 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-    //var_dump("insert=", $insert, "END");
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
 
    try {
       $stmt = $db->prepare($insert);
@@ -501,16 +367,9 @@ values ( :person, :facility, :date_created, :assessment_id, :question, :answer, 
       $stmt->bindParam(':answer', $answer, PDO::PARAM_STR, strlen($answer));      
       $result = $stmt->execute();
 
-   file_put_contents('php_debug.log', 'insertAssessmentsAnswers2 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-    var_dump("insert result=", $result, "END");
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
     }
     catch (PDOException $ex) {
 	    //die
-    file_put_contents('php_debug.log', 'insertAssessmentsAnswers exception >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-    var_dump("exception=", $ex, "END");
-    $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
 	    // continue?
     }
 }
@@ -518,10 +377,6 @@ values ( :person, :facility, :date_created, :assessment_id, :question, :answer, 
 function updateAssessmentsAnswers($person, $facility, $date_created, $assessment_id, $question, $answer){
 
    global $db;
-
-   file_put_contents('php_debug.log', 'updateAssessmentsAnswers0 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-   var_dump($answer);
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
 
    $update = "
 update assess set 
@@ -534,10 +389,6 @@ and assessment_id = :assessment_id
 and question = :question
 	";
 
-   file_put_contents('php_debug.log', 'updateAssessmentsAnswers1 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-    //var_dump("update=", $update, "END");
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
    try {
       $stmt = $db->prepare($update);
       $stmt->bindParam(':answer', $answer, PDO::PARAM_STR, strlen($answer)); 
@@ -548,16 +399,9 @@ and question = :question
       $stmt->bindParam(':question', $question, PDO::PARAM_INT);      
       $result = $stmt->execute();
 
-   file_put_contents('php_debug.log', 'updateAssessmentsAnswers2 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-    var_dump("update result=", $result, "END");
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
     }
     catch (PDOException $ex) {
 	    //die
-    file_put_contents('php_debug.log', 'updateAssessmentsAnswers exception >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-    var_dump("exception=", $ex, "END");
-    $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
 	    // continue?
     }
 }
@@ -566,15 +410,7 @@ function putAssessmentsAnswers() {
    global $db;
 
    $post = array();
-   //$post = $_POST['recs'];
 
-   file_put_contents('php_debug.log', 'putAssessmentsAnswers0 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-   var_dump("post['datatable']: ", $_POST['datatable'], "END");
-   //var_dump('$_POST: ', $_POST, "END");
-   //var_dump('$_POST num ', $_POST['num_recs'], "END");
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
-   
    for($i = 0; $i < $_POST['num_recs']; $i++){
 
       $recsKey = 'recs'.$i;
@@ -587,28 +423,15 @@ function putAssessmentsAnswers() {
       $question =      $rec[5];
       $answer =        $rec[6];
 
-      file_put_contents('php_debug.log', 'putAssessmentsAnswers recs >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-      var_dump($person, $facility, $date_created, $assessment_id, $question, $answer);
-      $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
       $row = getAssessmentsAnswers($person, $facility, $date_created, $assessment_id, $question);
-
-      file_put_contents('php_debug.log', 'putAssessmentsAnswers returned >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-      var_dump('row: ', $row);
-      $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
 
       if(!$row) {
          insertAssessmentsAnswers($person, $facility, $date_created, $assessment_id, $question, $answer);
       } elseif (strcmp($row['option'], $answer)) { // exists, answer changed
          updateAssessmentsAnswers($person, $facility, $date_created, $assessment_id, $question, $answer);
       } else {
-         file_put_contents('php_debug.log', 'putAssessmentsAnswers no change >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-         $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
       }
    }
-
-   file_put_contents('php_debug.log', 'putAssessmentsAnswers DONE >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
 
    $response["success"] = 1;
    die(json_encode($response));
@@ -617,10 +440,6 @@ function putAssessmentsAnswers() {
 function getPersons(){
 
    global $db;
-
-   file_put_contents('php_debug.log', 'getPersons()0 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-   //var_dump("_POST=", $_POST, "END");
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
 
    $query = " 
 select
@@ -636,10 +455,6 @@ where 1=1
 and p.is_deleted = 0
    ";
 
-   file_put_contents('php_debug.log', 'getPersons()1 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-   var_dump("query=", $query, "END");
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-    
     $query_params = array();
 
     try {
@@ -654,22 +469,11 @@ and p.is_deleted = 0
         $response["success"] = 0;
         $response["message"] = "Database Error.";
 
-   file_put_contents('php_debug.log', 'getPersons() exception >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-   var_dump("response=", $response, "END");
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
         die(json_encode($response));
     }
 
-   file_put_contents('php_debug.log', 'getPersons()2 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-   var_dump("result=", $result, "END");
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
    $rows = $stmt->fetchAll();
 
-   file_put_contents('php_debug.log', 'getPersons()2a >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-   //var_dump("rows=", $rows, "END");
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
 
    if ($rows) {
       $response["success"] = 1;
@@ -695,10 +499,6 @@ function getAssessmentsQuestions(){
 
    global $db;
 
-   file_put_contents('php_debug.log', 'getAssessmentsQuestions()0 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-   //var_dump("_POST=", $_POST, "END");
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
    $query = " 
 select
 aq.id,
@@ -710,10 +510,6 @@ aq.status
 from assessments_questions aq
    ";
 
-   file_put_contents('php_debug.log', 'getAssessmentsQuestions()1 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-   var_dump("query=", $query, "END");
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-    
     $query_params = array();
 
     try {
@@ -728,23 +524,11 @@ from assessments_questions aq
         $response["success"] = 0;
         $response["message"] = "Database Error.";
 
-   file_put_contents('php_debug.log', 'getAssessmentsQuestions() exception >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-   var_dump("response=", $response, "END");
-   var_dump("ex=", $ex, "END");
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
         die(json_encode($response));
     }
 
-   file_put_contents('php_debug.log', 'getAssessmentsQuestions()2 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-   var_dump("result=", $result, "END");
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
 
    $rows = $stmt->fetchAll();
-
-   file_put_contents('php_debug.log', 'getAssessmentsQuestions()2a >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-   //var_dump("rows=", $rows, "END");
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
 
    if ($rows) {
       $response["success"] = 1;
@@ -770,10 +554,6 @@ function getAssessments(){
 
    global $db;
 
-   file_put_contents('php_debug.log', 'getAssessments()0 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-   //var_dump("_POST=", $_POST, "END");
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
    $query = " 
 select 
   a.id, 
@@ -783,10 +563,6 @@ from assessments a
 join lookup_assessment_types lat on a.assessment_type_id = lat.id
    ";
 
-   file_put_contents('php_debug.log', 'getAssessments()1 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-   var_dump("query=", $query, "END");
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-    
     $query_params = array();
 
     try {
@@ -801,22 +577,10 @@ join lookup_assessment_types lat on a.assessment_type_id = lat.id
         $response["success"] = 0;
         $response["message"] = "Database Error.";
 
-   file_put_contents('php_debug.log', 'getAssessments() exception >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-   var_dump("response=", $response, "END");
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
         die(json_encode($response));
     }
 
-   file_put_contents('php_debug.log', 'getAssessments()2 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-   var_dump("result=", $result, "END");
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
    $rows = $stmt->fetchAll();
-
-   file_put_contents('php_debug.log', 'getAssessments()2a >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-   //var_dump("rows=", $rows, "END");
-   $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
 
    if ($rows) {
       $response["success"] = 1;
@@ -839,11 +603,6 @@ function getQuestionDropdownOption(){
 
     global $db;
 
-    file_put_contents('php_debug.log', 'getQuestionDropdownOption()0 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-    //var_dump("_POST=", $_POST, "END");
-    var_dump("Request=", $_SERVER['REQUEST_URI'], "END");
-    $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
     $query = "
 select
 aq.id as assessment_question_id,
@@ -853,10 +612,6 @@ join assessment_dropdowngroup_to_assessment_dropdown_option addo on aq.dropdowng
 join assessment_dropdown_option ado on ado.id = addo.assessment_dropdown_option_id
 order by aq.id, addo.assessment_dropdown_option_id
    ";
-
-    file_put_contents('php_debug.log', 'getQuestionDropdownOption()1 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-    var_dump("query=", $query, "END");
-    $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
 
     $query_params = array();
 
@@ -872,22 +627,10 @@ order by aq.id, addo.assessment_dropdown_option_id
         $response["success"] = 0;
         $response["message"] = "Database Error.";
 
-        file_put_contents('php_debug.log', 'getQuestionDropdownOption() exception >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-        var_dump("response=", $response, "END");
-        $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
         die(json_encode($response));
     }
 
-    file_put_contents('php_debug.log', 'getQuestionDropdownOption()2 >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-    var_dump("result=", $result, "END");
-    $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
-
     $rows = $stmt->fetchAll();
-
-    file_put_contents('php_debug.log', 'getQuestionDropdownOption()2a >'.PHP_EOL, FILE_APPEND | LOCK_EX);    ob_start();
-    var_dump("rows=", $rows, "END");
-    $toss = ob_get_clean(); file_put_contents('php_debug.log', $toss .PHP_EOL, FILE_APPEND | LOCK_EX);
 
     if ($rows) {
         $response["success"] = 1;
@@ -904,8 +647,3 @@ order by aq.id, addo.assessment_dropdown_option_id
         die(json_encode($response));
     }
 }
-
-?> 
-
-
-

@@ -1,7 +1,7 @@
 <?php 
 
     // These variables define the connection information for your MySQL database 
-    $username = ""; 
+    $username = "admin"; 
     $password = ""; 
     $host = "localhost"; 
     $dbname = "itechweb_mobile_demo"; 

@@ -53,6 +53,4 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # so log files can be written in the shared vagrant folder
   config.vm.provision :shell, :inline => "sudo service httpd restart", run: "always"
   config.vm.provision :shell, :inline => "sudo service mysqld restart", run: "always"
-  config.vm.provision :shell, :inline => "if [ ! -f /vagrant/sites/settings.php ]; then cp /vagrant/sites/settings-development.php /vagrant/sites/settings.php; fi"
-  config.vm.provision :shell, :inline => "if [ ! -f /vagrant/sites/globals.php ]; then cp /vagrant/sites/globals-development.php /vagrant/sites/globals.php; fi"
 end
